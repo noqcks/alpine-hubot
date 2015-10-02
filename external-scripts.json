@@ -11,6 +11,5 @@
   "hubot-rules",
   "hubot-shipit",
   "hubot-youtube",
-  "hubot-rubygems-search",
-  "hubot-aws"
+  "hubot-rubygems-search"
 ]
