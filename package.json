@@ -1,0 +1,38 @@
+{
+  "name": "dockbot",
+  "version": "1.0.0",
+  "description": "Hubot in Docker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:noqcks/dockbot.git"
+  },
+  "author": "Ben Visser",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noqcks/dockbot/issues"
+  },
+  "homepage": "https://github.com/noqcks/dockbot#readme",
+  "dependencies": {
+    "cron": "1.7.1",
+    "time": "0.12.0",
+    "hubot": "^2.17.0",
+    "hubot-auth": "^1.2.0",
+    "hubot-diagnostics": "0.0.1",
+    "hubot-help": "^0.1.2",
+    "hubot-newrelic2": "^0.2.5",
+    "hubot-out-of-office": "0.0.7",
+    "hubot-pager-me": "^2.1.10",
+    "hubot-pugme": "^0.1.0",
+    "hubot-redis-brain": "0.0.3",
+    "hubot-schedule": "^0.4.0",
+    "hubot-scripts": "^2.16.2",
+    "hubot-shy": "^1.0.2",
+    "hubot-slack": "4.6.0",
+    "hubot-standup-alarm": "0.0.7",
+    "hubot-jenkins-enhanced": "git://github.com/codeandfury/hubot-jenkins-enhanced#bug/build-param-fix"
+  }
+}
