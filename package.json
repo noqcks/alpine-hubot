@@ -1,5 +1,5 @@
 {
-  "name": "myhubot",
+  "name": "killbot9000",
   "version": "0.0.0",
   "private": true,
   "author": "Ben Visser <theodore.r.visser@gmail.com>",
@@ -16,8 +16,7 @@
     "hubot-redis-brain": "0.0.3",
     "hubot-rules": "^0.1.1",
     "hubot-scripts": "^2.16.2",
-    "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^3.3.0"
+    "hubot-shipit": "^0.2.0"
   },
   "engines": {
     "node": "0.10.x"
