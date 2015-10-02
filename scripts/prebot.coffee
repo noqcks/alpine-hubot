@@ -79,13 +79,18 @@ module.exports = (robot) ->
     jobsToBuild = []
     if buildconfig['node']
       options = {
+        frontendcore_branch: buildconfig['frontend'] || 'master',
+        hackerrank_branch: buildconfig['backend'] || 'master',
         nodename: buildconfig['node'],
-        hackerrank_branch:  buildconfig['backend'] || 'master',
-        frontendcore_branch: buildconfig['frontend'] || 'master'
-        ops_branch: buildconfig['ops'] || 'master'
-        rba: buildconfig['rba'] || 'false'
-        railsDebug: buildconfig['railsDebug'] || 'false'
-        nodeDebug: buildconfig['nodeDebug'] || 'false'
+        ops_branch: buildconfig['ops'] || 'master',
+        railsDebug: buildconfig['railsDebug'] || 'false',
+        nodeDebug: buildconfig['nodeDebug'] || 'false',
+        crons: buildconfig['cron'] || 'false',
+        hrc: buildconfig['hrc'] || 'false',
+        hrw: buildconfig['hrw'] || 'false',
+        metrics: buildconfig['metrics'] || 'false'
+        rba: buildconfig['rba'] || 'false',
+        workers: buildconfig['workers'] || 'false'
       }
       if buildconfig['node'] == 'workers'
         options = Object.assign(options, {
@@ -93,7 +98,23 @@ module.exports = (robot) ->
           rba: 'true'
         })
       if action != 'patch' || !buildconfig['sourcing']
-        jenkinsBuild(msg, 'k8s-private', options)
+        jenkinsBuild(msg, 'k8s-hackerrank-all', options)
+        client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
+      
+      if buildconfig['cluster'] == 'qa'
+        options = Object.assign(options, {
+          nodename: 'strongqa',
+          hrw: 'true',
+          hrc: 'true',
+          crons: 'true',
+          rba: 'true',
+          workers: 'true'
+        })
+        jenkinsBuild(msg, 'qa-build-deploy-new', options)
+        # Not adding the key-value pair to redis because QA is a persistent namespace
+
+      if buildconfig['cluster'] == 'devops'
+        jenkinsBuild(msg, 'k8s-hackerrank-all-devops', options)
         client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
 
       if buildconfig['sourcing']
