@@ -1,6 +1,7 @@
 [
   "hubot-diagnostics",
   "hubot-help",
+  "hubot-heroku-keepalive",
   "hubot-google-images",
   "hubot-google-translate",
   "hubot-pugme",
@@ -8,5 +9,11 @@
   "hubot-redis-brain",
   "hubot-rules",
   "hubot-shipit",
-  "hubot-standup-alarm"
+  "hubot-youtube",
+  "hubot-standup-alarm",
+  "hubot-auth",
+  "hubot-alias",
+  "hubot-gocd",
+  "hubot-youtube",
+  "hubot-s3-brain"
 ]

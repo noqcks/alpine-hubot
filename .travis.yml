@@ -1,0 +1,16 @@
+language: ruby
+sudo: required
+services:
+  - docker
+install:
+  - gem install bundler
+  - bundle install
+
+script:
+  - docker info
+  - docker build -t telusdigital/telusdigital-hubot:v_TRAVIS_BUILD_NUMBER .
+
+deploy:
+  - docker login -e DOCKER_EMAIL -u DOCKER_USER -p DOCKER_PASS
+  - docker push telusdigital/telusdigital-hubot:v_TRAVIS_BUILD_NUMBER
+  - bundle exec rake create_or_update

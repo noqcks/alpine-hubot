@@ -1,28 +1,29 @@
 {
-  "name": "killbot9000",
-  "version": "0.0.0",
-  "private": true,
-  "author": "Ben Visser <theodore.r.visser@gmail.com>",
-  "description": "A simple helpful robot for your Company",
-  "dependencies": {
-    "hubot": "^2.16.0",
-    "hubot-diagnostics": "0.0.1",
-    "hubot-google-images": "^0.2.2",
-    "hubot-google-translate": "^0.2.0",
-    "hubot-help": "^0.1.1",
-    "hubot-heroku-keepalive": "^1.0.0",
-    "hubot-maps": "0.0.2",
-    "hubot-meowme": "0.0.1",
-    "hubot-pugme": "^0.1.0",
-    "hubot-redis-brain": "0.0.3",
-    "hubot-rubygems-search": "^0.2.2",
-    "hubot-rules": "^0.1.1",
-    "hubot-scripts": "^2.16.2",
-    "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^3.3.0",
-    "hubot-youtube": "^1.0.1"
+  "name": "telusdigital-hubot",
+  "version": "1.0.0",
+  "description": "Hubot for TELUS digital",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "engines": {
-    "node": "0.10.x"
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/telusdigital/telusdigital-hubot.git"
+  },
+  "author": "Ben Visser",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/telusdigital/telusdigital-hubot/issues"
+  },
+  "homepage": "https://github.com/telusdigital/telusdigital-hubot#readme",
+  "dependencies": {
+    "hubot": "^2.17.0",
+    "hubot-alias": "^0.1.7",
+    "hubot-auth": "^1.2.0",
+    "hubot-google-translate": "^0.2.0",
+    "hubot-s3-brain": "0.0.1",
+    "hubot-slack": "^3.4.2",
+    "hubot-standup-alarm": "0.0.7",
+    "hubot-youtube": "^1.0.1"
   }
 }
