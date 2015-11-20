@@ -3,5 +3,7 @@
   "hubot-help",
   "hubot-google-translate",
   "hubot-auth",
-  "hubot-redis-brain"
+  "hubot-redis-brain",
+  "hubot-standup-alarm",
+  "hubot-newrelic2"
 ]
