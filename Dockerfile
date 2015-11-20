@@ -28,16 +28,15 @@ RUN yo hubot --owner="Ben Visser <benjamin.visser@telus.com>" --name="wasimbot" 
 
 # Some adapters / scripts
 USER root
-COPY package.json /src/package.json
-RUN cd /src; npm install
+COPY package.json package.json
+RUN npm install
 USER hubot
 
 # Activate some built-in scripts
 ADD hubot/hubot-scripts.json /hubot/
 ADD hubot/external-scripts.json /hubot/
 
-RUN npm install cheerio --save && npm install
-# ADD hubot/scripts/hubot-lunch.coffee /hubot/scripts/
+EXPOSE 80
 
 # And go
-CMD ["/bin/sh", "-c", "aws s3 cp --region eu-west-1 s3://telusdigital-secrets/hubot-env.sh .; . ./env.sh; bin/hubot --adapter slack"]
+ENTRYPOINT ["/bin/sh", "-c", "bin/hubot --adapter slack"]
