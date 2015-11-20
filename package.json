@@ -23,6 +23,7 @@
     "hubot-help": "^0.1.2",
     "hubot-newrelic2": "^0.2.5",
     "hubot-pager-me": "^2.1.10",
+    "hubot-pugme": "^0.1.0",
     "hubot-redis-brain": "0.0.3",
     "hubot-scripts": "^2.16.2",
     "hubot-slack": "^3.4.2",
