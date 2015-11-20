@@ -5,8 +5,3 @@ node_modules
 hubot-env.sh
 env.sh
 env
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml

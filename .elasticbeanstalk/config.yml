@@ -1,0 +1,10 @@
+branch-defaults:
+  master:
+    environment: wasimbot-prod
+global:
+  application_name: wasimbot
+  default_ec2_keyname: null
+  default_platform: docker
+  default_region: us-east-1
+  profile: null
+  sc: git
