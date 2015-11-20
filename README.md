@@ -93,6 +93,7 @@ explicitly specify which scripts from a package should be included. The example
 below, for example, will only activate two of the six available scripts inside
 the `hubot-fun` plugin, but all four of those in `hubot-auto-deploy`.
 
+
 ```json
 {
   "hubot-fun": [
