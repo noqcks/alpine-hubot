@@ -2,6 +2,8 @@
 
 Automating Wasim one script at a time.
 
+This is a telusdigital specific instance of [hubot](https://hubot.github.com/).
+
 ## Testing
 
 Pre-requisites:
