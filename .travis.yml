@@ -5,6 +5,7 @@ services:
 
 script:
   - docker build -t telusdigital/telusdigital-hubot:v_TRAVIS_BUILD_NUMBER .
+  - docker run -d telusdigital/telusdigital-hubot:v_TRAVIS_BUILD_NUMBER
 
 deploy:
   - provider: elasticbeanstalk
