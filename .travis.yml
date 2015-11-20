@@ -2,15 +2,21 @@ language: ruby
 sudo: required
 services:
   - docker
-install:
-  - gem install bundler
-  - bundle install
 
 script:
-  - docker info
   - docker build -t telusdigital/telusdigital-hubot:v_TRAVIS_BUILD_NUMBER .
 
 deploy:
-  - docker login -e DOCKER_EMAIL -u DOCKER_USER -p DOCKER_PASS
-  - docker push telusdigital/telusdigital-hubot:v_TRAVIS_BUILD_NUMBER
-  - bundle exec rake create_or_update
+  - provider: elasticbeanstalk
+    app: telusdigital-hubot
+    env: telusdigital-hubot-prod
+    bucket_name: elasticbeanstalk-us-east-1-461957644563
+    region: us-east-1
+    access_key_id:
+      secure: $AWS_ACCESS_KEY_ID
+    secret_access_key:
+      secure: $AWS_SECRET_ACCESS_KEY
+    on:
+      repo: telusdigital/telusdigital-hubot
+      branch: master
+      condition: "$TRAVIS_BRANCH = master"
