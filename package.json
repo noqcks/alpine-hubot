@@ -1,5 +1,5 @@
 {
-  "name": "telusdigital-hubot",
+  "name": "wasimbot",
   "version": "1.0.0",
   "description": "Hubot for TELUS digital",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/telusdigital/telusdigital-hubot.git"
+    "url": "git@github.com:telusdigital/telusdigital-hubot.git"
   },
   "author": "Ben Visser",
   "license": "MIT",

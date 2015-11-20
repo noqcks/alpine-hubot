@@ -4,13 +4,13 @@ services:
   - docker
 
 script:
-  - docker build -t telusdigital/telusdigital-hubot:v_TRAVIS_BUILD_NUMBER .
-  - docker run -d telusdigital/telusdigital-hubot:v_TRAVIS_BUILD_NUMBER
+  - docker build -t telusdigital/wasimbot .
+  - docker run -d telusdigital/wasimbot
 
 deploy:
   - provider: elasticbeanstalk
-    app: telusdigital-hubot
-    env: telusdigital-hubot-prod
+    app: wasimbot
+    env: wasimbot-prod
     bucket_name: elasticbeanstalk-us-east-1-461957644563
     region: us-east-1
     access_key_id:
@@ -18,6 +18,6 @@ deploy:
     secret_access_key:
       secure: $AWS_SECRET_ACCESS_KEY
     on:
-      repo: telusdigital/telusdigital-hubot
+      repo: telusdigital/wasimbot
       branch: master
       condition: "$TRAVIS_BRANCH = master"
