@@ -22,6 +22,7 @@
     "hubot-diagnostics": "0.0.1",
     "hubot-help": "^0.1.2",
     "hubot-newrelic2": "^0.2.5",
+    "hubot-out-of-office": "0.0.7",
     "hubot-pager-me": "^2.1.10",
     "hubot-pugme": "^0.1.0",
     "hubot-redis-brain": "0.0.3",

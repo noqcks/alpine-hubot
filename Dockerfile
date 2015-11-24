@@ -35,7 +35,6 @@ USER hubot
 # Activate some built-in scripts
 ADD hubot/hubot-scripts.json /hubot/
 ADD hubot/external-scripts.json /hubot/
-ADD hubot/scripts/wfh.coffee /hubot/scripts/
 
 EXPOSE 80
 
