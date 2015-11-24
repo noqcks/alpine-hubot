@@ -27,7 +27,6 @@
     "hubot-redis-brain": "0.0.3",
     "hubot-scripts": "^2.16.2",
     "hubot-slack": "^3.4.2",
-    "hubot-standup-alarm": "0.0.7",
-    "hubot-status": "0.0.2"
+    "hubot-standup-alarm": "0.0.7"
   }
 }
