@@ -2,3 +2,4 @@ HUBOT_SLACK_TOKEN= slack token
 HUBOT_AUTH_ADMIN= Admins
 HUBOT_NEWRELIC_API_KEY to your New Relic API key
 HUBOT_NEWRELIC_API_HOST=api.newrelic.com
+REDIS_URL= if using elasticache, put URL here
