@@ -8,5 +8,6 @@
   "hubot-newrelic2",
   "hubot-pugme",
   "hubot-out-of-office",
-  "hubot-shy"
+  "hubot-shy",
+  "hubot-schedule"
 ]
