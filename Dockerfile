@@ -1,5 +1,5 @@
 FROM ubuntu
-MAINTAINER Ben Visser <benjamin.visser@telus.com>
+MAINTAINER Ben Visser <benny@noqcks.io>
 
 RUN apt-get update
 RUN apt-get -y install expect redis-server nodejs npm
@@ -24,7 +24,7 @@ USER  hubot
 WORKDIR /hubot
 
 # Install hubot
-RUN yo hubot --owner="Ben Visser <benjamin.visser@telus.com>" --name="wasimbot" --description="Roll, roll, rollercoaster" --defaults
+RUN yo hubot --owner="Ben Visser <benny@noqcks.io>" --name="dockbot" --description="Roll, roll, rollercoaster" --defaults
 
 # Some adapters / scripts
 USER root

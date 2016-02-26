@@ -3,21 +3,21 @@ sudo: required
 services:
   - docker
 
-script:
-  - docker build -t telusdigital/wasimbot .
-  - docker run -d telusdigital/wasimbot
+# script:
+#   - docker build -t dockbot/dockbot .
+#   - docker run -d dockbot/dockbot
 
-deploy:
-  - provider: elasticbeanstalk
-    app: wasimbot
-    env: wasimbot-prod
-    bucket_name: elasticbeanstalk-us-east-1-461957644563
-    region: us-east-1
-    access_key_id:
-      secure: $AWS_ACCESS_KEY_ID
-    secret_access_key:
-      secure: $AWS_SECRET_ACCESS_KEY
-    on:
-      repo: telusdigital/wasimbot
-      branch: master
-      condition: "$TRAVIS_BRANCH = master"
+# deploy:
+#   - provider: elasticbeanstalk
+#     app: dockbot
+#     env: dockbot-prod
+#     bucket_name: elasticbeanstalk-us-east-1-461957644563
+#     region: us-east-1
+#     access_key_id:
+#       secure: $AWS_ACCESS_KEY_ID
+#     secret_access_key:
+#       secure: $AWS_SECRET_ACCESS_KEY
+#     on:
+#       repo: dockbot/dockbot
+#       branch: master
+#       condition: "$TRAVIS_BRANCH = master"

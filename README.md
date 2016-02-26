@@ -1,26 +1,23 @@
-# Wasimbot
+# dockbot
 
-Automating Wasim one script at a time.
-
-This is a telusdigital specific instance of [hubot](https://hubot.github.com/).
+Putting hubot inside Docker.
 
 ## Testing
 
 Pre-requisites:
 
-- A name for your bot
 - A slack token for your bot
 
 To build a docker image
 
 ```
-docker build -t $bot_name .
+docker build -t dockbot .
 ```
 
 To run the docker image
 
 ```
-docker run -e HUBOT_SLACK_TOKEN=$slack_token -d $bot_name
+docker run -e HUBOT_SLACK_TOKEN=$slack_token -d dockbot
 ```
 
 To see your docker logs, run `docker ps` and grab the ID of your bot container then run `docker logs $ID`.
@@ -35,16 +32,12 @@ Assuming your hubot script is called `hubot-foo`
 1. `npm install --save hubot-foo`
 2.  add `hubot-foo` to `hubot/external-scripts.json`
 
-### Custom Scripts
-
--- TODO --
-
 ## Deployment
 
-This is automatically deployed by travis-ci when on `telusdigital/wasimbot` and branch master.
+This is automatically deployed by travis-ci when on `dockbot/dockbot` and branch master.
 
 The AWS access key id and secret needed to deploy are kept in travis-ci interface ENV variables.
 
 ## Environment Configuration
 
-All the environment variables used to run wasimbot are located in `.wasimbot-env`. These can be loaded in elasticbeanstalk via `eb setenv KEY=value`.
+All the environment variables used to run dockbot are located in `.dockbot-env`. These can be loaded in elasticbeanstalk via `eb setenv KEY=value`.

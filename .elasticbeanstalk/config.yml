@@ -1,8 +1,8 @@
 branch-defaults:
   master:
-    environment: wasimbot-prod
+    environment: dockbot-prod
 global:
-  application_name: wasimbot
+  application_name: dockbot
   default_ec2_keyname: null
   default_platform: docker
   default_region: us-east-1

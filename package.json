@@ -1,21 +1,21 @@
 {
-  "name": "wasimbot",
+  "name": "dockbot",
   "version": "1.0.0",
-  "description": "Hubot for TELUS digital",
+  "description": "Hubot in Docker",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:telusdigital/telusdigital-hubot.git"
+    "url": "git@github.com:noqcks/dockbot.git"
   },
   "author": "Ben Visser",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/telusdigital/telusdigital-hubot/issues"
+    "url": "https://github.com/noqcks/dockbot/issues"
   },
-  "homepage": "https://github.com/telusdigital/telusdigital-hubot#readme",
+  "homepage": "https://github.com/noqcks/dockbot#readme",
   "dependencies": {
     "hubot": "^2.17.0",
     "hubot-auth": "^1.2.0",
