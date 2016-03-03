@@ -32,12 +32,3 @@ Assuming your hubot script is called `hubot-foo`
 1. `npm install --save hubot-foo`
 2.  add `hubot-foo` to `hubot/external-scripts.json`
 
-## Deployment
-
-This is automatically deployed by travis-ci when on `dockbot/dockbot` and branch master.
-
-The AWS access key id and secret needed to deploy are kept in travis-ci interface ENV variables.
-
-## Environment Configuration
-
-All the environment variables used to run dockbot are located in `.dockbot-env`. These can be loaded in elasticbeanstalk via `eb setenv KEY=value`.

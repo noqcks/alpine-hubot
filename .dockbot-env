@@ -1,6 +1,0 @@
-HUBOT_SLACK_TOKEN= slack token
-HUBOT_AUTH_ADMIN= comma separated list of admins slack IDs
-HUBOT_NEWRELIC_API_KEY to your New Relic API key
-HUBOT_NEWRELIC_API_HOST=api.newrelic.com
-REDIS_URL= if using elasticache, put URL here
-HUBOT_STANDUP_PREPEND= prepend message to standup alarms (e.g @here)
