@@ -1,38 +1,30 @@
-FROM ubuntu
+FROM alpine
+
 MAINTAINER Ben Visser <benny@noqcks.io>
 
-RUN apt-get update
-RUN apt-get -y install expect redis-server nodejs npm
-
-RUN apt-get update && \
-    apt-get install -y python-pip && \
-    pip install awscli
-
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-
-RUN npm install -g coffee-script
-RUN npm install -g yo generator-hubot
+# Install dependencies
+RUN apk update && apk upgrade \
+  && apk add redis \
+  && apk add nodejs \
+  && apk add python \
+  && apk add curl \
+  && curl -sS https://bootstrap.pypa.io/get-pip.py | python \
+  && pip install awscli \
+  && npm install -g npm \
+  && npm install -g coffee-script \
+  && npm install -g yo generator-hubot \
+  && apk --purge -v del py-pip \
+  && rm -rf /var/cache/apk/*
 
 # Create hubot user
-RUN useradd -d /hubot -m -s /bin/bash -U hubot
-
-# Log in as hubot user and change directory
+RUN adduser -h /hubot -s /bin/bash -S hubot
 USER  hubot
 WORKDIR /hubot
 
 # Install hubot
 RUN yo hubot --owner="Ben Visser <benny@noqcks.io>" --name="dockbot" --description="Roll, roll, rollercoaster" --defaults
-
-# Some adapters / scripts
-USER root
 COPY package.json package.json
 RUN npm install
-USER hubot
-
-# Activate some built-in scripts
 ADD hubot/hubot-scripts.json /hubot/
 ADD hubot/external-scripts.json /hubot/
 
