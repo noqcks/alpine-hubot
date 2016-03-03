@@ -1,4 +1,5 @@
 # alpine-hubot
+[![Build Status](https://travis-ci.org/noqcks/alpine-hubot.svg?branch=master)](https://travis-ci.org/noqcks/alpine-hubot)
 
 Putting hubot inside Docker.
 
