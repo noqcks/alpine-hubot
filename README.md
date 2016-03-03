@@ -1,4 +1,4 @@
-# dockbot
+# alpine-hubot
 
 Putting hubot inside Docker.
 
@@ -11,13 +11,13 @@ Pre-requisites:
 To build a docker image
 
 ```
-docker build -t dockbot .
+docker build -t alpine-hubot .
 ```
 
 To run the docker image
 
 ```
-docker run -e HUBOT_SLACK_TOKEN=$slack_token -d dockbot
+docker run -e HUBOT_SLACK_TOKEN=$slack_token -d alpine-hubot
 ```
 
 To see your docker logs, run `docker ps` and grab the ID of your bot container then run `docker logs $ID`.
