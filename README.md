@@ -1,5 +1,5 @@
-# alpine-hubot
-[![Build Status](https://travis-ci.org/noqcks/alpine-hubot.svg?branch=master)](https://travis-ci.org/noqcks/alpine-hubot)
+# hewbot-docker
+[![Build Status](https://travis-ci.org/Dynamictivity/hewbot-docker.svg?branch=master)](https://travis-ci.org/noqcks/Dynamictivity/hewbot-docker)
 
 Putting hubot inside Docker.
 
@@ -12,13 +12,13 @@ Pre-requisites:
 To build a docker image
 
 ```
-docker build -t alpine-hubot .
+docker build -t hewbot-docker .
 ```
 
 To run the docker image
 
 ```
-docker run -e HUBOT_SLACK_TOKEN=$slack_token -d alpine-hubot
+docker run -e HUBOT_SLACK_TOKEN=XXXXXX -d hewbot-docker
 ```
 
 To see your docker logs, run `docker ps` and grab the ID of your bot container then run `docker logs $ID`.
@@ -30,6 +30,5 @@ To see your docker logs, run `docker ps` and grab the ID of your bot container t
 
 Assuming your hubot script is called `hubot-foo`
 
-1. `npm install --save hubot-foo`
-2.  add `hubot-foo` to `hubot/external-scripts.json`
+- add `hubot-foo` to `hubot/external-scripts.json`
 
