@@ -3,5 +3,5 @@ services:
   - docker
 
 script:
-  - docker build -t dynamictivity/hewbot-docker .
-  - docker run -d dynamictivity/hewbot-docker
+  - docker build -t hewbot-docker .
+  - docker run -d hewbot-docker
