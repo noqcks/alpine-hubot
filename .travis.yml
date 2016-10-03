@@ -3,5 +3,5 @@ services:
   - docker
 
 script:
-  - docker build -t noqcks/alpine-hubot .
-  - docker run -d noqcks/alpine-hubot
+  - docker build -t dynamictivity/hewbot-docker .
+  - docker run -d dynamictivity/hewbot-docker
