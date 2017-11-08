@@ -28,6 +28,9 @@ RUN npm install
 ADD hubot/hubot-scripts.json /hubot/
 ADD hubot/external-scripts.json /hubot/
 
+# Overwriting start script https://github.com/noqcks/alpine-hubot/issues/2
+ADD bin/hubot bin/ 
+
 EXPOSE 80
 
 # And go
