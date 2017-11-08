@@ -5,7 +5,7 @@ MAINTAINER Ben Visser <benny@noqcks.io>
 # Install dependencies
 RUN apk update && apk upgrade \
   && apk add redis \
-  && apk add nodejs \
+  && apk add --update nodejs nodejs-npm \
   && apk add python \
   && apk add curl \
   && curl -sS https://bootstrap.pypa.io/get-pip.py | python \
