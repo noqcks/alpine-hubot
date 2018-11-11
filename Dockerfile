@@ -5,7 +5,7 @@ MAINTAINER Ben Visser <benny@noqcks.io>
 # Install dependencies
 RUN apk update && apk upgrade \
   && apk add redis \
-  && apk add nodejs \
+  && apk add --update nodejs nodejs-npm \
   && apk add python \
   && apk add curl \
   && curl -sS https://bootstrap.pypa.io/get-pip.py | python \
@@ -27,6 +27,9 @@ COPY package.json package.json
 RUN npm install
 ADD hubot/hubot-scripts.json /hubot/
 ADD hubot/external-scripts.json /hubot/
+
+# Overwriting start script https://github.com/noqcks/alpine-hubot/issues/2
+ADD bin/hubot bin/ 
 
 EXPOSE 80
 
