@@ -1,6 +1,6 @@
 FROM alpine
 
-MAINTAINER Ben Visser <benny@noqcks.io>
+MAINTAINER Ajish Balakrishnan <ajish@hackerrank.com>
 
 # Install dependencies
 RUN apk update && apk upgrade \
@@ -22,14 +22,14 @@ USER  hubot
 WORKDIR /hubot
 
 # Install hubot
-RUN yo hubot --owner="Ben Visser <benny@noqcks.io>" --name="dockbot" --description="Roll, roll, rollercoaster" --defaults
+RUN yo hubot --owner="Ajish Balakrishnan <ajish@hackerrank.com>" --name="prebot" --description="Hackzoid's friend in pre-prod world" --defaults
 COPY package.json package.json
 RUN npm install
 ADD hubot/hubot-scripts.json /hubot/
 ADD hubot/external-scripts.json /hubot/
 
 # Overwriting start script https://github.com/noqcks/alpine-hubot/issues/2
-ADD bin/hubot bin/ 
+ADD bin/hubot bin/
 
 EXPOSE 80
 
