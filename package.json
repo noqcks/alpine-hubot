@@ -29,7 +29,7 @@
     "hubot-schedule": "^0.4.0",
     "hubot-scripts": "^2.16.2",
     "hubot-shy": "^1.0.2",
-    "hubot-slack": "^3.4.2",
+    "hubot-slack": "4.6.0",
     "hubot-standup-alarm": "0.0.7",
     "hubot-jenkins-enhanced": "1.2.2"
   }
