@@ -31,6 +31,6 @@
     "hubot-shy": "^1.0.2",
     "hubot-slack": "4.6.0",
     "hubot-standup-alarm": "0.0.7",
-    "hubot-jenkins-enhanced": "1.2.2"
+    "hubot-jenkins-enhanced": "git://github.com/codeandfury/hubot-jenkins-enhanced#bug/build-param-fix"
   }
 }
