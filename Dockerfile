@@ -32,6 +32,7 @@ ADD hubot/external-scripts.json /hubot/
 
 # Overwriting start script https://github.com/noqcks/alpine-hubot/issues/2
 ADD bin/hubot bin/
+ADD scripts/ .
 
 EXPOSE 80
 
