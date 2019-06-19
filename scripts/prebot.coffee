@@ -30,12 +30,12 @@ module.exports = (robot) ->
   client = Redis.createClient('6379', 'redis')
 
   purgeExpiredNamespaces = ->
-    robot.messageRoom 'CFJLF9RCM', 'Checking for expired namespaces...'
+    robot.messageRoom 'CKPA1M0A3', 'Checking for expired namespaces...'
     http = require('http');
     auth = new Buffer(process.env.HUBOT_JENKINS_AUTH).toString('base64')
     client.zrangebyscore 'live-namespaces', '-inf', (new Date()).getTime(), (e, items) ->
       return if items.length < 1
-      robot.messageRoom 'CFJLF9RCM', "Removing #{items}"
+      robot.messageRoom 'CKPA1M0A3', "Removing #{items}"
       options = {
         host: 'jenkins.hackerrank.link',
         port: 8080,
