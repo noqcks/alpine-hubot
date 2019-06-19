@@ -28,19 +28,39 @@ module.exports = (robot) ->
   Redis = require('redis')
   cronJob = require('cron').CronJob
   client = Redis.createClient('6379', 'redis')
-  new cronJob('0 8 * * *', purgeExpiredNamespaces)
 
   purgeExpiredNamespaces = ->
-    robot.messageRoom 'CFJLF9RCM', 'Cleaning up expired namespaces...'
-    client.zrangebyscore 'live-namespaces', '-inf', (new Date()).getTime(), (e, item) ->
-      robot.messageRoom 'CFJLF9RCM', "Removing #{item}"
-      [service, nodename] = item.split("::")
-      jenkinsBuild(msg, 'private-node-cleanup', {
-        hackerrank: service == "hackerrank",
-        sourcing: service == "sourcing",
-        nodename: nodename
-      })
-      client.zrem('live-namespaces', item)
+    robot.messageRoom 'CFJLF9RCM', 'Checking for expired namespaces...'
+    http = require('http');
+    auth = new Buffer(process.env.HUBOT_JENKINS_AUTH).toString('base64')
+    client.zrangebyscore 'live-namespaces', '-inf', (new Date()).getTime(), (e, items) ->
+      robot.messageRoom 'CFJLF9RCM', "Removing #{items}"
+      options = {
+        host: 'jenkins.hackerrank.link',
+        port: 8080,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Basic #{auth}"
+        }
+      }
+      items.forEach (item) ->
+        [service, nodename] = item.split("::")
+        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}"
+        req = http.request options, (res) ->
+          client.zrem('live-namespaces', item)
+          console.log('Status: ' + res.statusCode)
+          console.log('Headers: ' + JSON.stringify(res.headers))
+          res.setEncoding('utf8')
+          res.on 'data', (body) ->
+            console.log('Body: ' + body)
+
+        req.on 'error', (e) ->
+          console.log('problem with request: ' + e.message);
+
+        req.end()
+
+  new cronJob('5 * * * *', purgeExpiredNamespaces)
 
 
   robot.respond /push (.+)/i, (msg) ->
