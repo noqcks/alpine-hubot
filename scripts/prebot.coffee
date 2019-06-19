@@ -29,7 +29,7 @@ module.exports = (robot) ->
     buildconfigArray = msg.match[1].match(/\S+/g)
     buildconfig = {}
     buildconfigArray.map (val) ->
-      k, v = val.split("=")
+      [k, v] = val.split("=")
       buildconfig[k] = v
     jobsToBuild = []
     if buildconfig['node']
@@ -48,7 +48,7 @@ module.exports = (robot) ->
       if buildconfig['sourcing']
         options = {
           nodename: buildconfig['node'],
-          sourcing_branch:  buildconfig['sourcing'] || 'master',
+          sourcing_branch:  buildconfig['sourcing'] || 'master'
         }
         jenkinsBuild(msg, 'k8s-private-sourcing', options)
 
