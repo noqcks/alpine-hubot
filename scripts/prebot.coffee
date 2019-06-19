@@ -25,12 +25,31 @@ jenkinsBuild = (msg, job, options) ->
           msg.reply "Jenkins says: Status #{res.statusCode} #{body}"
 
 module.exports = (robot) ->
+  Redis = require('redis')
+  cronJob = require('cron').CronJob
+  client = Redis.createClient('6379', 'redis')
+  new cronJob('0 8 * * *', purgeExpiredNamespaces)
+
+  purgeExpiredNamespaces = ->
+    robot.messageRoom 'CFJLF9RCM', 'Cleaning up expired namespaces...'
+    client.zrangebyscore 'live-namespaces', '-inf', (new Date()).getTime()), (e, item) ->
+      robot.messageRoom 'CFJLF9RCM', "Removing #{item}"
+      [service, nodename] = item.split("::")
+      jenkinsBuild(msg, 'private-node-cleanup', {
+        hackerrank: service == "hackerrank",
+        sourcing: service == "sourcing",
+        nodename: nodename
+      })
+      client.zrem('live-namespaces', item)
+
+
   robot.respond /push (.+)/i, (msg) ->
     buildconfigArray = msg.match[1].match(/\S+/g)
     buildconfig = {}
     buildconfigArray.map (val) ->
       [k, v] = val.split("=")
       buildconfig[k] = v
+    expiryTime = (new Date()).getTime() + ((buildconfig['ttl'] || 48) * 60 * 60 * 1000)
     jobsToBuild = []
     if buildconfig['node']
       options = {
@@ -44,6 +63,7 @@ module.exports = (robot) ->
           rba: 'true'
         })
       jenkinsBuild(msg, 'k8s-private', options)
+      client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
 
       if buildconfig['sourcing']
         options = {
@@ -51,6 +71,7 @@ module.exports = (robot) ->
           sourcing_branch:  buildconfig['sourcing'] || 'master'
         }
         jenkinsBuild(msg, 'k8s-private-sourcing', options)
+        client.zadd("live-namespaces", expiryTime, "sourcing::#{buildconfig['node']}")
 
       if buildconfig['candidate']
         options = {
