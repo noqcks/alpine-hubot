@@ -32,7 +32,7 @@ module.exports = (robot) ->
 
   purgeExpiredNamespaces = ->
     robot.messageRoom 'CFJLF9RCM', 'Cleaning up expired namespaces...'
-    client.zrangebyscore 'live-namespaces', '-inf', (new Date()).getTime()), (e, item) ->
+    client.zrangebyscore 'live-namespaces', '-inf', (new Date()).getTime(), (e, item) ->
       robot.messageRoom 'CFJLF9RCM', "Removing #{item}"
       [service, nodename] = item.split("::")
       jenkinsBuild(msg, 'private-node-cleanup', {
