@@ -34,6 +34,7 @@ module.exports = (robot) ->
     http = require('http');
     auth = new Buffer(process.env.HUBOT_JENKINS_AUTH).toString('base64')
     client.zrangebyscore 'live-namespaces', '-inf', (new Date()).getTime(), (e, items) ->
+      return if items.length < 1
       robot.messageRoom 'CFJLF9RCM', "Removing #{items}"
       options = {
         host: 'jenkins.hackerrank.link',
