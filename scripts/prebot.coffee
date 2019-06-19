@@ -77,6 +77,8 @@ module.exports = (robot) ->
         nodename: buildconfig['node'],
         hackerrank_branch:  buildconfig['backend'] || 'master',
         frontendcore_branch: buildconfig['frontend'] || 'master'
+        railsDebug: buildconfig['railsDebug'] || 'false'
+        nodeDebug: buildconfig['nodeDebug'] || 'false'
       }
       if buildconfig['node'] == 'workers'
         options = Object.assign(options, {
