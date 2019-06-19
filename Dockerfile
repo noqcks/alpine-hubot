@@ -5,6 +5,8 @@ MAINTAINER Ajish Balakrishnan <ajish@hackerrank.com>
 # Install dependencies
 RUN apk update && apk upgrade \
   && apk add --update busybox-suid \
+  && apk add build-base \
+  && apk add automake \
   && apk add git \
   && apk add openssh\
   && apk add redis \
