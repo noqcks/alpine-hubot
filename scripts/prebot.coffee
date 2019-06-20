@@ -61,7 +61,7 @@ module.exports = (robot) ->
 
         req.end()
 
-  new cronJob('* * 8 * * *', purgeExpiredNamespaces, null, true)
+  new cronJob('00 00 8 * * *', purgeExpiredNamespaces, null, true)
 
 
   robot.respond /push (.+)/i, (msg) ->
