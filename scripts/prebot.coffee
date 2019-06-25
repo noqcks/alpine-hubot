@@ -77,6 +77,8 @@ module.exports = (robot) ->
         nodename: buildconfig['node'],
         hackerrank_branch:  buildconfig['backend'] || 'master',
         frontendcore_branch: buildconfig['frontend'] || 'master'
+        ops_branch: buildconfig['ops'] || 'master'
+        rba: buildconfig['rba'] || 'false'
         railsDebug: buildconfig['railsDebug'] || 'false'
         nodeDebug: buildconfig['nodeDebug'] || 'false'
       }
