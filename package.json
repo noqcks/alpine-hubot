@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/noqcks/dockbot#readme",
   "dependencies": {
+    "cron": "1.7.1",
+    "time": "0.12.0",
     "hubot": "^2.17.0",
     "hubot-auth": "^1.2.0",
     "hubot-diagnostics": "0.0.1",
