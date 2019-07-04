@@ -64,8 +64,9 @@ module.exports = (robot) ->
   new cronJob('00 00 8 * * *', purgeExpiredNamespaces, null, true)
 
 
-  robot.respond /push (.+)/i, (msg) ->
-    buildconfigArray = msg.match[1].match(/\S+/g)
+  robot.respond /(push|patch) (.+)/i, (msg) ->
+    action = msg.match[1]
+    buildconfigArray = msg.match[2].match(/\S+/g)
     buildconfig = {}
     buildconfigArray.map (val) ->
       [k, v] = val.split("=")
@@ -87,16 +88,18 @@ module.exports = (robot) ->
           workers: 'true',
           rba: 'true'
         })
-      jenkinsBuild(msg, 'k8s-private', options)
-      client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
+      if action != 'patch' || !buildconfig['sourcing']
+        jenkinsBuild(msg, 'k8s-private', options)
+        client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
 
       if buildconfig['sourcing']
         options = {
           nodename: buildconfig['node'],
           sourcing_branch:  buildconfig['sourcing'] || 'master'
         }
-        jenkinsBuild(msg, 'k8s-private-sourcing', options)
-        client.zadd("live-namespaces", expiryTime, "sourcing::#{buildconfig['node']}")
+        if action != 'patch' || !buildconfig['hackerrank_branch']
+          jenkinsBuild(msg, 'k8s-private-sourcing', options)
+          client.zadd("live-namespaces", expiryTime, "sourcing::#{buildconfig['node']}")
 
       if buildconfig['candidate']
         options = {
