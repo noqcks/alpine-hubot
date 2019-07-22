@@ -104,8 +104,9 @@ module.exports = (robot) ->
       if buildconfig['candidate']
         options = {
           nodename: buildconfig['node'],
-          candidate_branch:  buildconfig['candidate'] || 'master',
-          namespace: buildconfig['namespace'] || buildconfig['node']
+          branch:  buildconfig['candidate'],
+          namespace: buildconfig['namespace'] || buildconfig['node'],
+          ops_branch: buildconfig['ops'] || 'master'
         }
         jenkinsBuild(msg, 'k8s-preprod-candidate-site', options)
 
