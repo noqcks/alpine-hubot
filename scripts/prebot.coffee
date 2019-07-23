@@ -47,7 +47,7 @@ module.exports = (robot) ->
       }
       items.forEach (item) ->
         [service, nodename] = item.split("::")
-        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}"
+        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}&content=#{service == 'content'}"
         req = http.request options, (res) ->
           client.zrem('live-namespaces', item)
           console.log('Status: ' + res.statusCode)
@@ -109,6 +109,16 @@ module.exports = (robot) ->
           ops_branch: buildconfig['ops'] || 'master'
         }
         jenkinsBuild(msg, 'k8s-preprod-candidate-site', options)
+
+      if buildconfig['content']
+        options = {
+          nodename: buildconfig['node'],
+          content_branch:  buildconfig['content'] || 'master',
+          namespace: buildconfig['namespace'] || buildconfig['node']
+          ops_branch: buildconfig['ops'] || 'master'
+        }
+        client.zadd("live-namespaces", expiryTime, "Content::#{buildconfig['node']}")
+        jenkinsBuild(msg, 'k8s-private-content', options)
 
 
 
