@@ -117,7 +117,7 @@ module.exports = (robot) ->
           namespace: buildconfig['namespace'] || buildconfig['node']
           ops_branch: buildconfig['ops'] || 'master'
         }
-        client.zadd("live-namespaces", expiryTime, "Content::#{buildconfig['node']}")
+        client.zadd("live-namespaces", expiryTime, "content::#{buildconfig['node']}")
         jenkinsBuild(msg, 'k8s-private-content', options)
 
 
