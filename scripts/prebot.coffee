@@ -2,8 +2,12 @@ querystring = require 'querystring'
 
 jenkinsBuild = (msg, job, options = {}) ->
     url = process.env.HUBOT_JENKINS_URL
+    path = "#{url}/job/#{job}/"
     params = Object.keys(options).map((k) -> "#{k}=#{options[k]}" ).join('&')
-    path = "#{url}/job/#{job}/buildWithParameters?#{params}"
+    if !!params
+      path += "buildWithParameters?#{params}"
+    else
+      path += "build"
 
     req = msg.http(path)
 
@@ -28,7 +32,6 @@ module.exports = (robot) ->
   client = Redis.createClient('6379', 'redis')
 
   purgeExpiredNamespaces = ->
-    robot.messageRoom 'CKPA1M0A3', 'Checking for expired namespaces...'
     http = require('http');
     auth = new Buffer(process.env.HUBOT_JENKINS_AUTH).toString('base64')
     client.zrangebyscore 'live-namespaces', '-inf', (new Date()).getTime(), (e, items) ->
