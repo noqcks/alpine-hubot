@@ -59,7 +59,7 @@ module.exports = (robot) ->
 
         req.end()
 
-  new cronJob('00 00 8 * * *', purgeExpiredNamespaces, null, true)
+  new cronJob('00 */5 * * * *', purgeExpiredNamespaces, null, true)
 
 
   robot.respond /deploy qa/i, (msg) ->
