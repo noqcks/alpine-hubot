@@ -66,7 +66,7 @@ module.exports = (robot) ->
 
 
   robot.respond /deploy qa/i, (msg) ->
-    jenkinsBuild(msg, 'create-qa-test-branch')
+    jenkinsBuild(msg, 'create-qa-test-branch', {'TRIGGERING_USER': msg.envelope.user.name})
 
   robot.respond /(push|patch) (.+)/i, (msg) ->
     action = msg.match[1]
