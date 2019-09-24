@@ -29,7 +29,7 @@ jenkinsBuild = (msg, job, options = {}) ->
 module.exports = (robot) ->
   Redis = require('redis')
   cronJob = require('cron').CronJob
-  client = Redis.createClient('6379', 'redis')
+  client = Redis.createClient('6379', 'prebot-redis.t72hes.0001.use1.cache.amazonaws.com')
 
   purgeExpiredNamespaces = ->
     http = require('http');
