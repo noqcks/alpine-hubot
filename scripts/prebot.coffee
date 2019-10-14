@@ -48,7 +48,7 @@ module.exports = (robot) ->
       }
       items.forEach (item) ->
         [service, nodename] = item.split("::")
-        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}&content=#{service == 'content'}"
+        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}&content=#{service == 'content'}&candidate=#{service == 'candidate'}"
         req = http.request options, (res) ->
           client.zrem('live-namespaces', item)
           console.log('Status: ' + res.statusCode)
@@ -112,6 +112,7 @@ module.exports = (robot) ->
           namespace: buildconfig['namespace'] || buildconfig['node'],
           ops_branch: buildconfig['ops'] || 'master'
         }
+        client.zadd("live-namespaces", expiryTime, "candidate::#{buildconfig['node']}")
         jenkinsBuild(msg, 'k8s-preprod-candidate-site', options)
 
       if buildconfig['content']
