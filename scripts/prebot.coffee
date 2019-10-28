@@ -64,9 +64,44 @@ module.exports = (robot) ->
 
   new cronJob('00 */5 * * * *', purgeExpiredNamespaces, null, true)
 
+  robot.respond /(deploy|newpush) (.+)/i, (msg) ->
+    action = msg.match[1]
+    buildconfigArray = msg.match[2].match(/\S+/g)
+    buildconfig = {}
+    buildconfigArray.map (val) ->
+      [k,v] = val.split("=")
+      buildconfig[k] = v
+    expiryTime = (new Date()).getTime() + ((buildconfig['ttl'] || 48) * 60 * 60 * 1000)
+    jobsToBuild = []
+    if buildconfig['node']
+      options = {
+        frontendcore_branch: buildconfig['frontend']   || 'master',
+        hackerrank_branch:   buildconfig['backend']    || 'master',
+        nodename:            buildconfig['node']       || 'default',
+        ops_branch:          buildconfig['ops']        || 'master',
+        railsDebug:          buildconfig['railsDebug'] || 'false',
+        nodeDebug:           buildconfig['nodeDebug']  || 'false',
+        crons:               buildconfig['crons']      || 'false',
+        hrc:                 buildconfig['hrc']        || 'false',
+        hrw:                 buildconfig['hrw']        || 'false',
+        metrics:             buildconfig['metrics']    || 'false',
+        rba:                 buildconfig['rba']        || 'false',
+        workers:             buildconfig['workers']    || 'false'
+      }
+      jenkinsBuild(msg, 'private-hackerrank-build', options)
+      client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
 
-  robot.respond /deploy qa/i, (msg) ->
-    jenkinsBuild(msg, 'create-qa-test-branch', {'TRIGGERING_USER': msg.envelope.user.name})
+    if buildconfig['node'] == "workers"
+      options = {
+        frontendcore_branch: buildconfig['frontend']   || 'master',
+        hackerrank_branch:   buildconfig['backend']    || 'master',
+        nodename:            buildconfig['node']       || 'default',
+        ops_branch:          buildconfig['ops']        || 'master',
+        rba:                 buildconfig['rba']        || 'true',
+        workers:             buildconfig['workers']    || 'true'
+      }
+      jenkinsBuild(msg, 'private-hackerrank-build', options)
+      client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
 
   robot.respond /(push|patch) (.+)/i, (msg) ->
     action = msg.match[1]
@@ -125,5 +160,7 @@ module.exports = (robot) ->
         client.zadd("live-namespaces", expiryTime, "content::#{buildconfig['node']}")
         jenkinsBuild(msg, 'k8s-private-content', options)
 
+      if buildconfig['qa']
+        jenkinsBuild(msg, 'create-qa-test-branch', {'TRIGGERING_USER': msg.envelope.user.name})
 
 
