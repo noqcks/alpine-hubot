@@ -81,27 +81,48 @@ module.exports = (robot) ->
         ops_branch:          buildconfig['ops']        || 'master',
         railsDebug:          buildconfig['railsDebug'] || 'false',
         nodeDebug:           buildconfig['nodeDebug']  || 'false',
-        crons:               buildconfig['crons']      || 'false',
         hrc:                 buildconfig['hrc']        || 'false',
         hrw:                 buildconfig['hrw']        || 'false',
-        metrics:             buildconfig['metrics']    || 'false',
-        rba:                 buildconfig['rba']        || 'false',
-        workers:             buildconfig['workers']    || 'false'
+        metrics:             buildconfig['metrics']    || 'false'
       }
-      jenkinsBuild(msg, 'private-hackerrank-build', options)
-      client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
 
-    if buildconfig['node'] == "workers"
-      options = {
-        frontendcore_branch: buildconfig['frontend']   || 'master',
-        hackerrank_branch:   buildconfig['backend']    || 'master',
-        nodename:            buildconfig['node']       || 'default',
-        ops_branch:          buildconfig['ops']        || 'master',
-        rba:                 buildconfig['rba']        || 'true',
-        workers:             buildconfig['workers']    || 'true'
-      }
+      if buildconfig['node'] == "workers"
+        options = Object.assign(options,{
+          rba:               'true',
+          workers:           'true',
+          sudorank:          'true',
+          crons:             'true'
+        })
       jenkinsBuild(msg, 'private-hackerrank-build', options)
       client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
+    
+      if buildconfig['sourcing']
+        options = {
+          nodename: buildconfig['node'],
+          sourcing_branch:  buildconfig['sourcing'] || 'master'
+        }
+        jenkinsBuild(msg, 'k8s-private-sourcing', options)
+        client.zadd("live-namespaces", expiryTime, "sourcing::#{buildconfig['node']}")
+
+      if buildconfig['content']
+        options = {
+          nodename: buildconfig['node'],
+          content_branch:  buildconfig['content'] || 'master',
+          namespace: buildconfig['namespace'] || buildconfig['node']
+          ops_branch: buildconfig['ops'] || 'master'
+        }
+        client.zadd("live-namespaces", expiryTime, "content::#{buildconfig['node']}")
+        jenkinsBuild(msg, 'k8s-private-content', options)
+
+      if buildconfig['candidate']
+        options = {
+          nodename: buildconfig['node'],
+          branch:  buildconfig['candidate'],
+          namespace: buildconfig['namespace'] || buildconfig['node'],
+          ops_branch: buildconfig['ops'] || 'master'
+        }
+        client.zadd("live-namespaces", expiryTime, "candidate::#{buildconfig['node']}")
+        jenkinsBuild(msg, 'k8s-preprod-candidate-site', options)
 
   robot.respond /(push|patch) (.+)/i, (msg) ->
     action = msg.match[1]
