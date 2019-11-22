@@ -48,7 +48,7 @@ module.exports = (robot) ->
       }
       items.forEach (item) ->
         [service, nodename] = item.split("::")
-        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}&content=#{service == 'content'}&candidate=#{service == 'candidate'}"
+        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}&content=#{service == 'content'}&candidate=#{service == 'candidate'}&auth=#{service == 'auth'}"
         req = http.request options, (res) ->
           client.zrem('live-namespaces', item)
           console.log('Status: ' + res.statusCode)
@@ -184,4 +184,14 @@ module.exports = (robot) ->
       if buildconfig['qa']
         jenkinsBuild(msg, 'create-qa-test-branch', {'TRIGGERING_USER': msg.envelope.user.name})
 
-
+      if buildconfig['auth']
+        service = 'auth'
+        options = {
+          service_name: service,
+          nodename: buildconfig['node'],
+          branch_name:  buildconfig[service] || 'master',
+          namespace: buildconfig['namespace'] || buildconfig['node']
+          ops_branch: buildconfig['ops'] || 'master'
+        }
+        client.zadd("live-namespaces", expiryTime, "#{service}::#{buildconfig['node']}")
+        jenkinsBuild(msg, "k8s-private-#{service}", options)
