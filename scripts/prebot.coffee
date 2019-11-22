@@ -101,7 +101,7 @@ module.exports = (robot) ->
           nodename: buildconfig['node'],
           sourcing_branch:  buildconfig['sourcing'] || 'master'
         }
-        jenkinsBuild(msg, 'k8s-private-sourcing', options)
+        jenkinsBuild(msg, 'k8s-private-sourcing-new', options)
         client.zadd("live-namespaces", expiryTime, "sourcing::#{buildconfig['node']}")
 
       if buildconfig['content']
