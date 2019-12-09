@@ -124,6 +124,17 @@ module.exports = (robot) ->
         client.zadd("live-namespaces", expiryTime, "candidate::#{buildconfig['node']}")
         jenkinsBuild(msg, 'k8s-preprod-candidate-site', options)
 
+      services = ['auth', 'keycloak']
+      services.forEach (service) ->
+        if buildconfig[service]
+          options = {
+            nodename: buildconfig['node'],
+            branch_name:  buildconfig[service] || 'master',
+            ops_branch: buildconfig['ops'] || 'master'
+          }
+          client.zadd("live-namespaces", expiryTime, "#{service}::#{buildconfig['node']}")
+          jenkinsBuild(msg, "k8s-private-#{service}", options)
+
   robot.respond /(push|patch) (.+)/i, (msg) ->
     action = msg.match[1]
     buildconfigArray = msg.match[2].match(/\S+/g)
@@ -184,14 +195,13 @@ module.exports = (robot) ->
       if buildconfig['qa']
         jenkinsBuild(msg, 'create-qa-test-branch', {'TRIGGERING_USER': msg.envelope.user.name})
 
-      if buildconfig['auth']
-        service = 'auth'
-        options = {
-          service_name: service,
-          nodename: buildconfig['node'],
-          branch_name:  buildconfig[service] || 'master',
-          namespace: buildconfig['namespace'] || buildconfig['node']
-          ops_branch: buildconfig['ops'] || 'master'
-        }
-        client.zadd("live-namespaces", expiryTime, "#{service}::#{buildconfig['node']}")
-        jenkinsBuild(msg, "k8s-private-#{service}", options)
+      services = ['auth', 'keycloak']
+      services.forEach (service) ->
+        if buildconfig[service]
+          options = {
+            nodename: buildconfig['node'],
+            branch_name:  buildconfig[service] || 'master',
+            ops_branch: buildconfig['ops'] || 'master'
+          }
+          client.zadd("live-namespaces", expiryTime, "#{service}::#{buildconfig['node']}")
+          jenkinsBuild(msg, "k8s-private-#{service}", options)
