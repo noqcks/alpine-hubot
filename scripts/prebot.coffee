@@ -95,14 +95,14 @@ module.exports = (robot) ->
         })
       jenkinsBuild(msg, 'private-hackerrank-build', options)
       client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
-    
+
       if buildconfig['sourcing']
         options = {
           nodename: buildconfig['node'],
           branch_name:  buildconfig['sourcing'] || 'master',
           ops_branch: buildconfig['ops'] || 'master'
         }
-        jenkinsBuild(msg, 'k8s-private-sourcing-new', options)
+        jenkinsBuild(msg, 'k8s-private-sourcing', options)
         client.zadd("live-namespaces", expiryTime, "sourcing::#{buildconfig['node']}")
 
       if buildconfig['content']
