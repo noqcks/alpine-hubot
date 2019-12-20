@@ -1,6 +1,6 @@
-FROM alpine
+FROM node:8.17.0-alpine3.10
 
-MAINTAINER Ajish Balakrishnan <ajish@hackerrank.com>
+MAINTAINER Anurag Tiwari <anurag@hackerrank.com>
 
 # Install dependencies
 # For line 14: https://github.com/nodejs/docker-node/issues/813#issuecomment-407339011
@@ -11,7 +11,7 @@ RUN apk update && apk upgrade \
   && apk add git \
   && apk add openssh\
   && apk add redis \
-  && apk add --update nodejs nodejs-npm \
+  # && apk add --update nodejs nodejs-npm \
   && npm config set unsafe-perm true \
   && apk add python \
   && apk add curl \
@@ -29,7 +29,7 @@ USER  hubot
 WORKDIR /hubot
 
 # Install hubot
-RUN yo hubot --owner="Ajish Balakrishnan <ajish@hackerrank.com>" --name="prebot" --description="Hackzoid's friend in pre-prod world" --defaults
+RUN yo hubot --owner="Anurag Tiwari <anurag@hackerrank.com>" --name="prebot" --description="Hackzoid's friend in pre-prod world" --defaults
 COPY package.json package.json
 
 RUN npm install
