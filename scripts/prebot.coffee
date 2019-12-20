@@ -83,6 +83,7 @@ module.exports = (robot) ->
         nodeDebug:           buildconfig['nodeDebug']  || 'false',
         hrc:                 buildconfig['hrc']        || 'false',
         hrw:                 buildconfig['hrw']        || 'false',
+        rba:                 buildconfig['rba']        || 'false',
         metrics:             buildconfig['metrics']    || 'false'
       }
 
