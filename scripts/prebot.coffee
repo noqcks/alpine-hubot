@@ -64,7 +64,7 @@ module.exports = (robot) ->
 
   new cronJob('00 */5 * * * *', purgeExpiredNamespaces, null, true)
 
-  robot.respond /(deploy|newpush|patch) (.+)/i, (msg) ->
+  robot.respond /(deploy|patch) (.+)/i, (msg) ->
     action = msg.match[1]
     buildconfigArray = msg.match[2].match(/\S+/g)
     buildconfig = {}

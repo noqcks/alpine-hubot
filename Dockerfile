@@ -11,7 +11,6 @@ RUN apk update && apk upgrade \
   && apk add git \
   && apk add openssh\
   && apk add redis \
-  # && apk add --update nodejs nodejs-npm \
   && npm config set unsafe-perm true \
   && apk add python \
   && apk add curl \
