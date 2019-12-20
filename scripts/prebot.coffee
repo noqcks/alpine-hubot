@@ -64,12 +64,12 @@ module.exports = (robot) ->
 
   new cronJob('00 */5 * * * *', purgeExpiredNamespaces, null, true)
 
-  robot.respond /(deploy|newpush) (.+)/i, (msg) ->
+  robot.respond /(deploy|patch) (.+)/i, (msg) ->
     action = msg.match[1]
     buildconfigArray = msg.match[2].match(/\S+/g)
     buildconfig = {}
     buildconfigArray.map (val) ->
-      [k,v] = val.split("=")
+      [k, v] = val.split("=")
       buildconfig[k] = v
     expiryTime = (new Date()).getTime() + ((buildconfig['ttl'] || 48) * 60 * 60 * 1000)
     jobsToBuild = []
@@ -83,6 +83,7 @@ module.exports = (robot) ->
         nodeDebug:           buildconfig['nodeDebug']  || 'false',
         hrc:                 buildconfig['hrc']        || 'false',
         hrw:                 buildconfig['hrw']        || 'false',
+        rba:                 buildconfig['rba']        || 'false',
         metrics:             buildconfig['metrics']    || 'false'
       }
 
@@ -93,87 +94,11 @@ module.exports = (robot) ->
           sudorank:          'true',
           crons:             'true'
         })
-      jenkinsBuild(msg, 'private-hackerrank-build', options)
-      client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
 
-      if buildconfig['sourcing']
-        options = {
-          nodename: buildconfig['node'],
-          branch_name:  buildconfig['sourcing'] || 'master',
-          ops_branch: buildconfig['ops'] || 'master'
-        }
-        jenkinsBuild(msg, 'k8s-private-sourcing', options)
-        client.zadd("live-namespaces", expiryTime, "sourcing::#{buildconfig['node']}")
-
-      if buildconfig['content']
-        options = {
-          nodename: buildconfig['node'],
-          content_branch:  buildconfig['content'] || 'master',
-          namespace: buildconfig['namespace'] || buildconfig['node']
-          ops_branch: buildconfig['ops'] || 'master'
-        }
-        client.zadd("live-namespaces", expiryTime, "content::#{buildconfig['node']}")
-        jenkinsBuild(msg, 'k8s-private-content', options)
-
-      if buildconfig['candidate']
-        options = {
-          nodename: buildconfig['node'],
-          branch:  buildconfig['candidate'],
-          namespace: buildconfig['namespace'] || buildconfig['node'],
-          ops_branch: buildconfig['ops'] || 'master'
-        }
-        client.zadd("live-namespaces", expiryTime, "candidate::#{buildconfig['node']}")
-        jenkinsBuild(msg, 'k8s-preprod-candidate-site', options)
-
-      services = ['auth', 'keycloak']
-      services.forEach (service) ->
-        if buildconfig[service]
-          options = {
-            nodename: buildconfig['node'],
-            branch_name:  buildconfig[service] || 'master',
-            ops_branch: buildconfig['ops'] || 'master'
-          }
-          client.zadd("live-namespaces", expiryTime, "#{service}::#{buildconfig['node']}")
-          jenkinsBuild(msg, "k8s-private-#{service}", options)
-
-  robot.respond /(push|patch) (.+)/i, (msg) ->
-    action = msg.match[1]
-    buildconfigArray = msg.match[2].match(/\S+/g)
-    buildconfig = {}
-    buildconfigArray.map (val) ->
-      [k, v] = val.split("=")
-      buildconfig[k] = v
-    expiryTime = (new Date()).getTime() + ((buildconfig['ttl'] || 48) * 60 * 60 * 1000)
-    jobsToBuild = []
-    if buildconfig['node']
-      options = {
-        nodename: buildconfig['node'],
-        hackerrank_branch:  buildconfig['backend'] || 'master',
-        frontendcore_branch: buildconfig['frontend'] || 'master'
-        ops_branch: buildconfig['ops'] || 'master'
-        rba: buildconfig['rba'] || 'false'
-        railsDebug: buildconfig['railsDebug'] || 'false'
-        nodeDebug: buildconfig['nodeDebug'] || 'false'
-      }
-      if buildconfig['node'] == 'workers'
-        options = Object.assign(options, {
-          workers: 'true',
-          rba: 'true'
-        })
       if action != 'patch'
-        jenkinsBuild(msg, 'k8s-private', options)
+        jenkinsBuild(msg, 'private-hackerrank-build', options)
         client.zadd("live-namespaces", expiryTime, "hackerrank::#{buildconfig['node']}")
 
-      if buildconfig['candidate']
-        options = {
-          nodename: buildconfig['node'],
-          branch:  buildconfig['candidate'],
-          namespace: buildconfig['namespace'] || buildconfig['node'],
-          ops_branch: buildconfig['ops'] || 'master'
-        }
-        client.zadd("live-namespaces", expiryTime, "candidate::#{buildconfig['node']}")
-        jenkinsBuild(msg, 'k8s-preprod-candidate-site', options)
-
       if buildconfig['content']
         options = {
           nodename: buildconfig['node'],
@@ -183,6 +108,16 @@ module.exports = (robot) ->
         }
         client.zadd("live-namespaces", expiryTime, "content::#{buildconfig['node']}")
         jenkinsBuild(msg, 'k8s-private-content', options)
+
+      if buildconfig['candidate']
+        options = {
+          nodename: buildconfig['node'],
+          branch:  buildconfig['candidate'],
+          namespace: buildconfig['namespace'] || buildconfig['node'],
+          ops_branch: buildconfig['ops'] || 'master'
+        }
+        client.zadd("live-namespaces", expiryTime, "candidate::#{buildconfig['node']}")
+        jenkinsBuild(msg, 'k8s-preprod-candidate-site', options)
 
       if buildconfig['qa']
         jenkinsBuild(msg, 'create-qa-test-branch', {'TRIGGERING_USER': msg.envelope.user.name})
