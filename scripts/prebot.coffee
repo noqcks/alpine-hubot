@@ -84,6 +84,7 @@ module.exports = (robot) ->
         hrc:                 buildconfig['hrc']        || 'false',
         hrw:                 buildconfig['hrw']        || 'false',
         rba:                 buildconfig['rba']        || 'false',
+        sudorank:            buildconfig['sudorank']   || 'false',
         metrics:             buildconfig['metrics']    || 'false'
       }
 
