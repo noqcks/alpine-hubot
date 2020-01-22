@@ -77,11 +77,13 @@ module.exports = (robot) ->
       options = {
         frontendcore_branch: buildconfig['frontend']   || 'master',
         hackerrank_branch:   buildconfig['backend']    || 'master',
+        community_branch:    buildconfig['community_branch'] || 'master',
         nodename:            buildconfig['node']       || 'default',
         ops_branch:          buildconfig['ops']        || 'master',
         railsDebug:          buildconfig['railsDebug'] || 'false',
         nodeDebug:           buildconfig['nodeDebug']  || 'false',
         hrc:                 buildconfig['hrc']        || 'false',
+        community:           buildconfig['hrc']        || 'false', # if hrc is true make community true
         hrw:                 buildconfig['hrw']        || 'false',
         rba:                 buildconfig['rba']        || 'false',
         metrics:             buildconfig['metrics']    || 'false'
