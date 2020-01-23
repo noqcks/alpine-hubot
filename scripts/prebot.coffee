@@ -32,7 +32,7 @@ module.exports = (robot) ->
   client = Redis.createClient('6379', 'prebot-redis.t72hes.0001.use1.cache.amazonaws.com')
 
   purgeExpiredNamespaces = ->
-    http = require('http');
+    http = require('http')
     auth = new Buffer(process.env.HUBOT_JENKINS_AUTH).toString('base64')
     client.zrangebyscore 'live-namespaces', '-inf', (new Date()).getTime(), (e, items) ->
       return if items.length < 1
@@ -58,11 +58,31 @@ module.exports = (robot) ->
             console.log('Body: ' + body)
 
         req.on 'error', (e) ->
-          console.log('problem with request: ' + e.message);
+          console.log('problem with request: ' + e.message)
 
         req.end()
 
   new cronJob('00 */5 * * * *', purgeExpiredNamespaces, null, true)
+
+  robot.respond /(coderunner deploy) (.+)/i, (msg) ->
+    room = msg.message.room
+    if room != 'GRQQDQ27K' # coderunner-deployment slack channel id
+      msg.send("You can run this message only in 'coderunner-deployment' room.")
+      return
+
+    action = msg.match[1]
+    buildconfigArray = msg.match[2].match(/\S+/g)
+    buildconfig = {}
+    buildconfigArray.map (val) ->
+      [k, v] = val.split("=")
+      buildconfig[k] = v
+
+    options = {
+      branch:                 buildconfig['branch']                 || 'master',
+      integration_tests_only: buildconfig['integration_tests_only'] || 'false',
+    }
+
+    jenkinsBuild(msg, "coderunner-staging-deployment", options)
 
   robot.respond /(deploy|patch) (.+)/i, (msg) ->
     action = msg.match[1]
