@@ -48,7 +48,7 @@ module.exports = (robot) ->
       }
       items.forEach (item) ->
         [service, nodename] = item.split("::")
-        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}&content=#{service == 'content'}&candidate=#{service == 'candidate'}&auth=#{service == 'auth'}&keycloak=#{service == 'keycloak'}"
+        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}&content=#{service == 'content'}&roles=#{service == 'roles'}&candidate=#{service == 'candidate'}&auth=#{service == 'auth'}&keycloak=#{service == 'keycloak'}"
         req = http.request options, (res) ->
           client.zrem('live-namespaces', item)
           console.log('Status: ' + res.statusCode)
@@ -130,6 +130,16 @@ module.exports = (robot) ->
         }
         client.zadd("live-namespaces", expiryTime, "content::#{buildconfig['node']}")
         jenkinsBuild(msg, 'k8s-private-content', options)
+      
+      if buildconfig['roles']
+        options = {
+          nodename: buildconfig['node'],
+          roles_branch:  buildconfig['roles'] || 'master',
+          namespace: buildconfig['namespace'] || buildconfig['node']
+          ops_branch: buildconfig['ops'] || 'master'
+        }
+        client.zadd("live-namespaces", expiryTime, "roles::#{buildconfig['node']}")
+        jenkinsBuild(msg, 'k8s-private-role', options)
 
       if buildconfig['candidate']
         options = {
