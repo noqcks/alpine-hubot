@@ -106,6 +106,7 @@ module.exports = (robot) ->
         community:           buildconfig['hrc']        || 'false', # if hrc is true make community true
         hrw:                 buildconfig['hrw']        || 'false',
         rba:                 buildconfig['rba']        || 'false',
+        sudorank:            buildconfig['sudorank']   || 'false',
         metrics:             buildconfig['metrics']    || 'false'
       }
 
