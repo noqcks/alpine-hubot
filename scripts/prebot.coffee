@@ -48,7 +48,7 @@ module.exports = (robot) ->
       }
       items.forEach (item) ->
         [service, nodename] = item.split("::")
-        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}&content=#{service == 'content'}&roles=#{service == 'roles'}&candidate=#{service == 'candidate'}&auth=#{service == 'auth'}&keycloak=#{service == 'keycloak'}"
+        options['path'] = "/job/private-node-cleanup/buildWithParameters?nodename=#{nodename}&hackerrank=#{service == 'hackerrank'}&sourcing=#{service == 'sourcing'}&content=#{service == 'content'}&roles=#{service == 'roles'}&candidate=#{service == 'candidate'}&codepair=#{service == 'codepair'}&auth=#{service == 'auth'}&keycloak=#{service == 'keycloak'}"
         req = http.request options, (res) ->
           client.zrem('live-namespaces', item)
           console.log('Status: ' + res.statusCode)
@@ -151,6 +151,16 @@ module.exports = (robot) ->
         }
         client.zadd("live-namespaces", expiryTime, "candidate::#{buildconfig['node']}")
         jenkinsBuild(msg, 'k8s-preprod-candidate-site', options)
+
+      if buildconfig['codepair']
+        options = {
+          nodename: buildconfig['node'],
+          branch:  buildconfig['codepair'],
+          namespace: buildconfig['namespace'] || buildconfig['node'],
+          ops_branch: buildconfig['ops'] || 'master'
+        }
+        client.zadd("live-namespaces", expiryTime, "codepair::#{buildconfig['node']}")
+        jenkinsBuild(msg, 'k8s-codepair-frontend-private', options)
 
       if buildconfig['qa']
         jenkinsBuild(msg, 'create-qa-test-branch', {'TRIGGERING_USER': msg.envelope.user.name})
