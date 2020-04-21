@@ -175,3 +175,11 @@ module.exports = (robot) ->
           }
           client.zadd("live-namespaces", expiryTime, "#{service}::#{buildconfig['node']}")
           jenkinsBuild(msg, "k8s-private-#{service}", options)
+
+  robot.respond /(qa-deploy) (.+)/i, (msg) ->
+    options = {
+      TRIGGERING_USER:     'here',
+      CHANNEL_NAME:        'deployment'
+    }
+
+    jenkinsBuild(msg, "create-qa-test-branch", options)
